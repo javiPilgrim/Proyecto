@@ -1,12 +1,10 @@
 import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.Collections;
 
 
 public class PalabraSecreta {
@@ -74,6 +72,11 @@ private FileWriter escritor;
         }
     }
 
+    public void verListaOrdenada(){
+        Collections.sort(palabras);
+        palabras.forEach(x -> System.out.println(x));
+    }
+
 
     public String getPalabraOculta() {
         return palabraOculta;
@@ -90,9 +93,10 @@ private FileWriter escritor;
 
     public static void main(String[] args) {
         PalabraSecreta texto = new PalabraSecreta();
-        texto.imprimeTexto();
+        texto.verListaOrdenada();
         System.out.println("La lista tiene " + texto.cuentaPalabras() + " palabras");
         texto.incorporaPalabra();
+
 
 
     }

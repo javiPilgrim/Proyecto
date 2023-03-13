@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -18,6 +20,7 @@ public class Formulario extends JFrame implements ActionListener {
     private String palabraelegida;
     private String palabras = "";
     private String sonido = "src/music/Creation.wav";
+    private String tiemposegundos = Menu.tiempoSegundos;
     InputStream in;
     AudioStream audio;
     public Timer tiempo;
@@ -125,7 +128,7 @@ public class Formulario extends JFrame implements ActionListener {
         salir.addActionListener(this);
 
         // label de la cuenta atrás
-        reloj = new JLabel("180");
+        reloj = new JLabel(tiemposegundos);
         reloj.setBounds(700, -20, 400, 200);
         reloj.setFont(new Font("Serif", Font.PLAIN, 60));
         reloj.setForeground(Color.BLACK);
@@ -195,7 +198,7 @@ public class Formulario extends JFrame implements ActionListener {
         if (e.getSource() == reiniciar) {
             vidas = 5;
             exito = 0;
-            reloj.setText("180");
+            reloj.setText(tiemposegundos);
             tiempo.start();
             secreto.getNewPalabraOculta();
             respuesta.setText("");
@@ -204,7 +207,7 @@ public class Formulario extends JFrame implements ActionListener {
             perdiste.setText("");
             palabras = "";
             coleccionPalabras.setText("");
-            AudioPlayer.player.start(audio);
+            sonarCancion();
 
         }
 
@@ -226,4 +229,20 @@ public class Formulario extends JFrame implements ActionListener {
             perdiste.setText("HAS PERDIDO!! LA PALABRA SECRETA ERA: " + secreto.getPalabraOculta());
         }
     }
+
+    private void sonarCancion(){
+        try {
+            in = new FileInputStream(sonido);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            audio = new AudioStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AudioPlayer.player.start(audio);
+    }
+
+
 }
