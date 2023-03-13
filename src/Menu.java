@@ -14,7 +14,6 @@ public class Menu extends JFrame implements ActionListener {
     private JMenuBar mb;
     private JMenu menuOpciones, menuAcercaDe, menuTemporizador;
     private JMenuItem minuto, minutomedio, dosminutos;
-
     public static String nombreJugador = "";
     private ImageIcon logo;
     private JLabel instrucciones;
@@ -31,9 +30,9 @@ public class Menu extends JFrame implements ActionListener {
     private PalabraSecreta oculta = new PalabraSecreta();
     private String nombre = "";
     private String sound = "src/music/waterfall.wav";
-    //Formulario principal = new Formulario();
     InputStream in;
     AudioStream audio;
+    public static String tiempoSegundos;
 
     public Menu() throws Exception{
         setLayout(null);
@@ -182,10 +181,17 @@ public class Menu extends JFrame implements ActionListener {
                 label3.setText("Bienvenido " + nombreJugador + ". Pulsa ahora Jugar");
                 Jugar.setEnabled(true);
             }
-
-
         }
 
+        if(e.getSource() == minuto){
+            tiempoSegundos = "75";
+        }
+        if(e.getSource() == minuto){
+            tiempoSegundos = "90";
+        }
+        if(e.getSource() == dosminutos){
+            tiempoSegundos = "120";
+        }
     }
 
 
