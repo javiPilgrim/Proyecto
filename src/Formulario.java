@@ -17,7 +17,7 @@ public class Formulario extends JFrame implements ActionListener {
     private JTextField respuesta;
     private String palabraelegida;
     private String palabras = "";
-    private String sonido = "scr/music/Creation.wav";
+    private String sonido = "src/music/Creation.wav";
     InputStream in;
     AudioStream audio;
     public Timer tiempo;
