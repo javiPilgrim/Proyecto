@@ -20,6 +20,8 @@ public class Formulario extends JFrame implements ActionListener {
     private String palabraelegida;
     private String palabras = "";
     private String sonido = "src/music/Creation.wav";
+    private String aplauso = "src/music/aplauso.wav";
+    private String abucheo = "src/music/abucheo.wav";
     private String tiemposegundos = Menu.tiempoSegundos;
     InputStream in;
     AudioStream audio;
@@ -186,11 +188,13 @@ public class Formulario extends JFrame implements ActionListener {
                 perdiste.setText("VICTORIA!! HAS DESTAPADO LA PALABRA OCULTA!!");
                 tiempo.stop();
                 AudioPlayer.player.stop(audio);
+                sonarCancion(aplauso);
             } else if (vidas == 0) {
                 respuesta.setText("Perdiste");
                 perdiste.setText("HAS PERDIDO!! LA PALABRA SECRETA ERA: " + secreto.getPalabraOculta());
                 tiempo.stop();
                 AudioPlayer.player.stop(audio);
+                sonarCancion(abucheo);
             }
 
         }
@@ -207,7 +211,7 @@ public class Formulario extends JFrame implements ActionListener {
             perdiste.setText("");
             palabras = "";
             coleccionPalabras.setText("");
-            sonarCancion();
+            sonarCancion(sonido);
 
         }
 
@@ -230,9 +234,9 @@ public class Formulario extends JFrame implements ActionListener {
         }
     }
 
-    private void sonarCancion(){
+    private void sonarCancion(String musica){
         try {
-            in = new FileInputStream(sonido);
+            in = new FileInputStream(musica);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
