@@ -32,12 +32,13 @@ public class Menu extends JFrame implements ActionListener {
     private String sound = "src/music/waterfall.wav";
     InputStream in;
     AudioStream audio;
-    public static String tiempoSegundos;
+    public static String tiempoSegundos = "60";
 
     public Menu() throws Exception{
         setLayout(null);
         setTitle("Menu de Bienvenida");
         getContentPane().setBackground(new Color(255,174,201));
+
         in = new FileInputStream(sound);
         audio = new AudioStream(in);
         AudioPlayer.player.start(audio);

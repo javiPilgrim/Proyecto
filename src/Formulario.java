@@ -22,6 +22,7 @@ public class Formulario extends JFrame implements ActionListener {
     private String sonido = "src/music/Creation.wav";
     private String aplauso = "src/music/aplauso.wav";
     private String abucheo = "src/music/abucheo.wav";
+    private String campanilla = "src/music/campanilla.wav";
     private String tiemposegundos = Menu.tiempoSegundos;
     InputStream in;
     AudioStream audio;
@@ -155,6 +156,7 @@ public class Formulario extends JFrame implements ActionListener {
         for (int i = 0; i < secreto.getPalabraOculta().length(); i++) {
             if (secreto.getPalabraOculta().charAt(i) == palabraelegida.charAt(i)) {
                 devolucion += secreto.getPalabraOculta().charAt(i);
+                sonarCancion(campanilla);
             } else {
                 devolucion += "*";
             }
@@ -184,16 +186,16 @@ public class Formulario extends JFrame implements ActionListener {
                 }
             }
             if (exito == 1) {
+                AudioPlayer.player.stop(audio);
                 respuesta.setText("Victoria");
                 perdiste.setText("VICTORIA!! HAS DESTAPADO LA PALABRA OCULTA!!");
                 tiempo.stop();
-                AudioPlayer.player.stop(audio);
                 sonarCancion(aplauso);
             } else if (vidas == 0) {
+                pararCancion();
                 respuesta.setText("Perdiste");
                 perdiste.setText("HAS PERDIDO!! LA PALABRA SECRETA ERA: " + secreto.getPalabraOculta());
                 tiempo.stop();
-                AudioPlayer.player.stop(audio);
                 sonarCancion(abucheo);
             }
 
@@ -248,5 +250,21 @@ public class Formulario extends JFrame implements ActionListener {
         AudioPlayer.player.start(audio);
     }
 
+    private void pararCancion(){
+        try {
+            in = new FileInputStream(sonido);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            audio = new AudioStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AudioPlayer.player.stop(audio);
+    }
 
-}
+    }
+
+
+
