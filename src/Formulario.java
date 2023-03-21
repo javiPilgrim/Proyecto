@@ -50,7 +50,7 @@ public class Formulario extends JFrame implements ActionListener {
         AudioPlayer.player.start(audio);
 
         // label de Bienvenida.
-        label1 = new JLabel("BIENVENIDO A LINGO: " + Menu.nombreJugador);
+        label1 = new JLabel("BIENVENIDO A LINGO: " + Menu.nombreJugador1);
         label1.setBounds(240, -180, 400, 400);
         label1.setFont(new Font("Serif", Font.PLAIN, 30));
         label1.setForeground(Color.BLUE);
