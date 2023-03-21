@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class Formulario extends JFrame implements ActionListener {
 
-    private JLabel label1, label2, label3, oculta, intentos, nIntentos, perdiste, coleccionPalabras, reloj;
+    private JLabel label1, juego, label2, label3, oculta, intentos, nIntentos, perdiste, coleccionPalabras, reloj;
     private JButton boton1, reiniciar, salir;
     private JTextField respuesta;
     private String palabraelegida;
@@ -43,18 +43,24 @@ public class Formulario extends JFrame implements ActionListener {
         getContentPane().setBackground(new Color(113, 190, 221));
 
 
-
         // sonar cancion.
         in = new FileInputStream(sonido);
         audio = new AudioStream(in);
         AudioPlayer.player.start(audio);
 
         // label de Bienvenida.
-        label1 = new JLabel("BIENVENIDO A LINGO: " + Menu.nombreJugador);
-        label1.setBounds(240, -180, 400, 400);
+        label1 = new JLabel("BIENVENIDO A LINGO: " + Menu.nombreJugador1);
+        label1.setBounds(40, -180, 400, 400);
         label1.setFont(new Font("Serif", Font.PLAIN, 30));
         label1.setForeground(Color.BLUE);
         add(label1);
+
+        // label de numero de partida.
+        juego = new JLabel("JUEGO Nº: " + Menu.cont_Jug1);
+        juego.setBounds(480, -180, 400, 400);
+        juego.setFont(new Font("Serif", Font.PLAIN, 30));
+        juego.setForeground(Color.DARK_GRAY);
+        add(juego);
 
         // label titulo de palabra secreta.
         label2 = new JLabel("Palabra Secreta:");
@@ -171,10 +177,10 @@ public class Formulario extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == boton1) {
             if (exito == 0 && vidas != 0) {
-                if(respuesta.getText().length() > 5 || respuesta.getText().equals("")){
-                    JOptionPane.showMessageDialog(null,"La palabra debe tener 5 letras.");
+                if (respuesta.getText().length() > 5 || respuesta.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "La palabra debe tener 5 letras.");
                     respuesta.setText("");
-                }else {
+                } else {
                     palabraelegida = respuesta.getText().toLowerCase();
                     comparar();
                     oculta.setText(comparar());
@@ -213,6 +219,8 @@ public class Formulario extends JFrame implements ActionListener {
             perdiste.setText("");
             palabras = "";
             coleccionPalabras.setText("");
+            incrementarPartida();
+            cambioTurno();
             sonarCancion(sonido);
 
         }
@@ -223,6 +231,7 @@ public class Formulario extends JFrame implements ActionListener {
 
 
     }
+
     // metodo para la cuenta atras
     private void operacionQueHaraTimer() {
         cuenta = Integer.parseInt(reloj.getText());
@@ -236,7 +245,7 @@ public class Formulario extends JFrame implements ActionListener {
         }
     }
 
-    private void sonarCancion(String musica){
+    private void sonarCancion(String musica) {
         try {
             in = new FileInputStream(musica);
         } catch (FileNotFoundException e) {
@@ -250,7 +259,7 @@ public class Formulario extends JFrame implements ActionListener {
         AudioPlayer.player.start(audio);
     }
 
-    private void pararCancion(){
+    private void pararCancion() {
         try {
             in = new FileInputStream(sonido);
         } catch (FileNotFoundException e) {
@@ -264,7 +273,28 @@ public class Formulario extends JFrame implements ActionListener {
         AudioPlayer.player.stop(audio);
     }
 
+    private void cambioTurno() {
+        if (Menu.jugadores == 2) {
+            if (Menu.turno == 1) {
+                Menu.turno = 2;
+                label1.setText("BIENVENIDO A LINGO: " + Menu.nombreJugador2);
+                juego.setText("JUEGO Nº: " + Menu.cont_Jug2);
+            } else {
+                Menu.turno = 1;
+                label1.setText("BIENVENIDO A LINGO: " + Menu.nombreJugador1);
+                juego.setText("JUEGO Nº: " + Menu.cont_Jug1);
+            }
+        }else{
+            juego.setText("JUEGO Nº: " + Menu.cont_Jug1);
+        }
     }
 
+    private void incrementarPartida(){
+        if(Menu.turno==1){
+            Menu.cont_Jug1++;
+        }else{
+            Menu.cont_Jug2++;
+        }
+    }
 
-
+}

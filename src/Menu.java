@@ -8,31 +8,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Locale;
 
 
 public class Menu extends JFrame implements ActionListener {
     private JMenuBar mb;
-    private JMenu menuOpciones, menuAcercaDe, menuTemporizador;
-    private JMenuItem minuto, minutomedio, dosminutos;
-    public static String nombreJugador = "";
+    private JMenu menuOpciones, menuInstrucciones, menuAcercaDe, menuTemporizador, menuJugadores;
+    private JMenuItem minuto, minutomedio, dosminutos, unJugador, dosJugadores, verInstrucciones;
+    public static String nombreJugador1 = "", nombreJugador2="";
     private ImageIcon logo;
     private JLabel instrucciones;
     private JLabel instrucciones2;
     private JLabel instrucciones3;
-    private JLabel label1;
-    private JLabel label2;
-    private JLabel label3;
+    private JLabel label1, label2, label3;
     private JLabel dibujo;
     private JButton AñadirNombre;
     private JButton Jugar;
     private JButton comprobar;
     private JTextField npalabra;
     private PalabraSecreta oculta = new PalabraSecreta();
-    private String nombre = "";
+    private String nombre1 = "", nombre2 = "";
     private String sound = "src/music/waterfall.wav";
     InputStream in;
     AudioStream audio;
     public static String tiempoSegundos = "60";
+    public static int jugadores = 1, turno =1, cont_Jug1 = 1, cont_Jug2 = 1;
+    private boolean isDosJugadores = true;
+
 
     public Menu() throws Exception{
         setLayout(null);
@@ -81,21 +83,50 @@ public class Menu extends JFrame implements ActionListener {
         menuTemporizador.add(dosminutos);
         dosminutos.addActionListener(this);
 
+        menuJugadores = new JMenu("Numero de Jugadores");
+        menuJugadores.setFont(new Font("Andale Mono", 1, 14));
+        menuJugadores.setForeground(new Color(255, 0, 0));
+        menuOpciones.add(menuJugadores);
+
+        unJugador = new JMenuItem("1 Jugador");
+        unJugador.setFont(new Font("Andale Mono", 1, 14));
+        unJugador.setForeground(new Color(255, 0, 0));
+        menuJugadores.add(unJugador);
+        unJugador.addActionListener(this);
+
+        dosJugadores = new JMenuItem("2 jugadores");
+        dosJugadores.setFont(new Font("Andale Mono", 1, 14));
+        dosJugadores.setForeground(new Color(255, 0, 0));
+        menuJugadores.add(dosJugadores);
+        dosJugadores.addActionListener(this);
+
+        menuInstrucciones = new JMenu("instrucciones");
+        menuInstrucciones.setBackground(new Color(255,0,0));
+        menuInstrucciones.setFont(new Font("Andale Mono",1,14));
+        menuInstrucciones.setForeground(new Color(255,255,255));
+        mb.add(menuInstrucciones);
+
+        verInstrucciones = new JMenuItem("Leer Instrucciones");
+        verInstrucciones.setFont(new Font("Andale Mono", 1, 14));
+        verInstrucciones.setForeground(new Color(255, 0, 0));
+        menuInstrucciones.add(verInstrucciones);
+        verInstrucciones.addActionListener(this);
 
 
-        instrucciones = new JLabel("Este juego consiste en adivinar la palabra de cinco letras escondida.");
+
+        instrucciones = new JLabel("Pincha en opciones para cambiar el tiempo de juego o jugadores.");
         instrucciones.setBounds(50, -100, 680, 400);
         instrucciones.setFont(new Font("Serif", Font.PLAIN, 24));
         instrucciones.setForeground(Color.BLACK);
         add(instrucciones);
 
-        instrucciones2 = new JLabel("Introduce palabras hasta adivinar cual es la palabra oculta.");
+        instrucciones2 = new JLabel("Pincha en Instrucciones para saber como jugar..");
         instrucciones2.setBounds(50, -70, 680, 400);
         instrucciones2.setFont(new Font("Serif", Font.PLAIN, 24));
         instrucciones2.setForeground(Color.BLACK);
         add(instrucciones2);
 
-        instrucciones3 = new JLabel("Pero, ojo, solo tienes 5 intentos.");
+        instrucciones3 = new JLabel("Cuando hayas definido tiempo y jugadores pulsa en añadir tu nombre.");
         instrucciones3.setBounds(50, -40, 680, 400);
         instrucciones3.setFont(new Font("Serif", Font.PLAIN, 24));
         instrucciones3.setForeground(Color.BLACK);
@@ -109,7 +140,7 @@ public class Menu extends JFrame implements ActionListener {
 
 
         label2 = new JLabel("");
-        label2.setBounds(40, -120, 400, 400);
+        label2.setBounds(40, -120, 540, 400);
         label2.setFont(new Font("Serif", Font.PLAIN, 30));
         label2.setForeground(Color.BLACK);
         add(label2);
@@ -165,21 +196,42 @@ public class Menu extends JFrame implements ActionListener {
 
         }
         if (e.getSource() == AñadirNombre) {
-            label2.setText("Introduce tu nombre: ");
-            npalabra.setVisible(true);
-            comprobar.setVisible(true);
-            instrucciones.setVisible(false);
-            instrucciones2.setVisible(false);
-            instrucciones3.setVisible(false);
+            if (jugadores == 1) {
+                label2.setText("Introduce tu nombre: ");
+            } else if (jugadores==2){
+                label2.setText("Introduce el nombre del primer jugador: ");
+            }
+                npalabra.setVisible(true);
+                comprobar.setVisible(true);
+                instrucciones.setVisible(false);
+                instrucciones2.setVisible(false);
+                instrucciones3.setVisible(false);
 
         }
         if (e.getSource() == comprobar) {
-            nombreJugador = npalabra.getText().trim().toUpperCase();
-            if(nombreJugador.equals("")){
-                JOptionPane.showMessageDialog(null,"Debes escribir un nombre");
-            }
-            else {
-                label3.setText("Bienvenido " + nombreJugador + ". Pulsa ahora Jugar");
+            if (isDosJugadores) {
+                if (jugadores == 1) {
+                    nombreJugador1 = npalabra.getText().trim().toUpperCase();
+                    if (nombreJugador1.equals("")) {
+                        JOptionPane.showMessageDialog(null, "Debes escribir un nombre");
+                    } else {
+                        label3.setText("Bienvenido " + nombreJugador1 + ". Pulsa ahora Jugar");
+                        Jugar.setEnabled(true);
+                    }
+                } else if (jugadores == 2) {
+                    nombreJugador1 = npalabra.getText().trim().toUpperCase();
+                    if (nombreJugador1.equals("")) {
+                        JOptionPane.showMessageDialog(null, "Debes escribir un nombre");
+                    } else {
+                        label3.setText("Bienvenido " + nombreJugador1 + ".");
+                        label2.setText("Introduce el nombre del segundo jugador: ");
+                        npalabra.setText("");
+                        isDosJugadores=false;
+                    }
+                }
+            } else {
+                nombreJugador2 = npalabra.getText().trim().toUpperCase();
+                label3.setText("Bienvenido " + nombreJugador2 + ". Pulsa ahora Jugar.");
                 Jugar.setEnabled(true);
             }
         }
@@ -192,6 +244,22 @@ public class Menu extends JFrame implements ActionListener {
         }
         if(e.getSource() == dosminutos){
             tiempoSegundos = "120";
+        }
+
+        if(e.getSource() == unJugador){
+            jugadores = 1;
+        }
+
+        if(e.getSource() == dosJugadores){
+            jugadores = 2;
+        }
+
+        if(e.getSource() == verInstrucciones){
+            JOptionPane.showMessageDialog(null,"Este juego consiste en " +
+                    "adivinar la palabra de cinco letras escondida.\n" +
+                    "Introduce palabras hasta adivinar cual es la palabra oculta.\n" +
+                    "Pero, ojo, solo tienes 5 intentos y un tiempo limitado.\n" +
+                    "Buena Suerte!!");
         }
     }
 
