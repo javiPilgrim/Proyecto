@@ -20,9 +20,7 @@ public class Menu extends JFrame implements ActionListener {
     private JLabel instrucciones;
     private JLabel instrucciones2;
     private JLabel instrucciones3;
-    private JLabel label1;
-    private JLabel label2;
-    private JLabel label3;
+    private JLabel label1, label2, label3;
     private JLabel dibujo;
     private JButton AñadirNombre;
     private JButton Jugar;
@@ -34,7 +32,7 @@ public class Menu extends JFrame implements ActionListener {
     InputStream in;
     AudioStream audio;
     public static String tiempoSegundos = "60";
-    public static int jugadores = 1;
+    public static int jugadores = 1, turno =1, cont_Jug1 = 1, cont_Jug2 = 1;
     private boolean isDosJugadores = true;
 
 
